@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'screens/dashboard.dart';
+
 void main() {
   runApp(const ByteBankAppTwo());
 }
@@ -10,10 +12,11 @@ class ByteBankAppTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('INICIAL'),),
-      ),
+      theme: ThemeData(
+          colorScheme: const ColorScheme.light()
+              .copyWith(primary: Colors.green[900])
+              .copyWith(secondary: Colors.green[700])),
+      home: const Dashboard(),
     );
   }
-
 }
