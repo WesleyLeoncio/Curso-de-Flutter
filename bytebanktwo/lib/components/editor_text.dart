@@ -15,7 +15,7 @@ class EditorText extends StatelessWidget {
       child: TextFormField(
         validator: Validatorless.multiple([
           Validatorless.required("Nome Obrigatório"),
-          Validatorless.min(6, "Nome deve ter no mínimo 6 Caracteres")
+          Validatorless.min(5, "Nome deve ter no mínimo 6 Caracteres")
         ]),
         controller: controller,
         decoration: InputDecoration(

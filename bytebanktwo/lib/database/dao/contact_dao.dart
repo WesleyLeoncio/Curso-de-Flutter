@@ -27,6 +27,11 @@ class ContactDao{
     return contacts;
   }
 
+  Future<void> deleteContact(int id) async{
+    final Database db = await getDatabase();
+    await db.delete(_tableName,where: 'id = ?',whereArgs: [id]);
+  }
+
   ///////////////////////////////////////////////////////////////////////////
   Map<String, dynamic> _toMap(Contact contact) {
     final Map<String, dynamic> contactMap = {};
