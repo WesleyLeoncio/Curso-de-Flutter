@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'screens/campo_teste.dart';
 import 'screens/dashboard.dart';
 
 void main() {
