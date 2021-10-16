@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:validatorless/validatorless.dart';
 
 class EditorNumber extends StatelessWidget {
   final TextEditingController controller;
@@ -11,7 +12,11 @@ class EditorNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: TextField(
+      child: TextFormField(
+        validator: Validatorless.multiple([ // responsavel pelas validações
+          Validatorless.required("Numero da Conta Obrigatório"),
+           Validatorless.number("Preencha o campo corretamente"),
+        ]),
         controller: controller,
         decoration: InputDecoration(
           labelText: rotulo,

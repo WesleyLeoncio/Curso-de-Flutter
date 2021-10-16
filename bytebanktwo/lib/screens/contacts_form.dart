@@ -15,29 +15,33 @@ class _ContactFormState extends State<ContactForm> {
   final TextEditingController _controllerNome = TextEditingController();
   final TextEditingController _controllerNconta = TextEditingController();
   final ContactDao _dao = ContactDao();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Novo Contato'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            EditorText(_controllerNome, 'Nome Completo'),
-            EditorNumber(_controllerNconta, 'Numero da Conta'),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: SizedBox(
-                width: double.maxFinite,
-                child: ElevatedButton(
-                  onPressed: () => _criarContact(context),
-                  child: const Text('Confirmar'),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              EditorText(_controllerNome, 'Nome Completo'),
+              EditorNumber(_controllerNconta, 'Numero da Conta'),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    onPressed: () => _criarContact(context),
+                    child: const Text('Confirmar'),
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -46,11 +50,13 @@ class _ContactFormState extends State<ContactForm> {
   void _criarContact(BuildContext context) {
     final String? name = _controllerNome.text;
     final int? nConta = int.tryParse(_controllerNconta.text);
-    if (name != null && nConta != null) {
-      final newContact = Contact(0, name, nConta);
-      _dao.save(newContact).then((id) => Navigator.pop(context));
-    } else {
-      debugPrint('Preencha os campos corretamente');
+
+    var formValid = _formKey.currentState?.validate() ?? false;
+    if (formValid) {
+      if (name != null && nConta != null) {
+        final newContact = Contact(0, name, nConta);
+        _dao.save(newContact).then((id) => Navigator.pop(context));
+      }
     }
   }
 }
