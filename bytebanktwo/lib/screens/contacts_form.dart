@@ -22,25 +22,27 @@ class _ContactFormState extends State<ContactForm> {
       appBar: AppBar(
         title: const Text('Novo Contato'),
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              EditorText(_controllerNome, 'Nome Completo'),
-              EditorNumber(_controllerNconta, 'Numero da Conta'),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
-                    onPressed: () => _criarContact(context),
-                    child: const Text('Confirmar'),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                EditorText(_controllerNome, 'Nome Completo'),
+                EditorNumber(_controllerNconta, 'Numero da Conta'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      onPressed: () => _criarContact(context),
+                      child: const Text('Confirmar'),
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
