@@ -1,16 +1,17 @@
-import 'package:bytebanktwo/database/dao/contact_dao.dart';
+import 'package:bytebanktwo/controll/contact_atualiza.dart';
 import 'package:bytebanktwo/model/contact.dart';
-import 'package:bytebanktwo/screens/contacts_list.dart';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ContactItem extends StatelessWidget {
   final Contact _contact;
-  final ContactDao _dao = ContactDao();
-
-  ContactItem(this._contact, {Key? key}) : super(key: key);
+  const ContactItem(this._contact, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //var contacts = Provider.of<ContactAtualiza>(context);
+    var contAtualiza = context.watch<ContactAtualiza>();
     return Card(
       child: ListTile(
         leading: const Icon(Icons.monetization_on),
@@ -38,7 +39,8 @@ class ContactItem extends StatelessWidget {
                       actions: <Widget>[
                         ElevatedButton(
                           onPressed: () {
-                            _dao.deleteContact(_contact.id);
+                            contAtualiza.remove(_contact);
+                            //contAtualiza.notifyListeners();
                             Navigator.of(context).pop();
                           },
                           child: const Text("Sim"),

@@ -1,9 +1,12 @@
+import 'package:bytebanktwo/controll/contact_atualiza.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'screens/dashboard.dart';
 
 void main() {
-  runApp(const ByteBankAppTwo());
+  runApp(ChangeNotifierProvider(
+      create: (context) => ContactAtualiza(), child: const ByteBankAppTwo()));
 }
 
 class ByteBankAppTwo extends StatelessWidget {

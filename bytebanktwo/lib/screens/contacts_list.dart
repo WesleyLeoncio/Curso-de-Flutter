@@ -1,8 +1,10 @@
 import 'package:bytebanktwo/components/contact_item.dart';
+import 'package:bytebanktwo/controll/contact_atualiza.dart';
 import 'package:bytebanktwo/database/dao/contact_dao.dart';
 import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/screens/contacts_form.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class ContactsList extends StatefulWidget {
   const ContactsList({Key? key}) : super(key: key);
@@ -15,13 +17,14 @@ class _ContactsListState extends State<ContactsList> {
   final ContactDao _dao = ContactDao();
   @override
   Widget build(BuildContext context) {
+    var contAtualiza = context.watch<ContactAtualiza>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contatos'),
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: const [],
-        future: _dao.findAll(),
+        future: contAtualiza.getAll(),
         builder: (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
