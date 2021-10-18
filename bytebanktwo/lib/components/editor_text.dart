@@ -1,11 +1,12 @@
+import 'package:bytebanktwo/model/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
 
 class EditorText extends StatelessWidget {
   final TextEditingController controller;
   final String rotulo;
-
-  const EditorText(this.controller, this.rotulo, {Key? key,})
+  final Contact contact;
+  const EditorText(this.controller, this.rotulo,this.contact, {Key? key, })
       : super(key: key);
 
   @override

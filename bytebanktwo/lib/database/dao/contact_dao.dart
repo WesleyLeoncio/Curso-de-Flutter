@@ -2,8 +2,7 @@ import 'package:bytebanktwo/database/app_database.dart';
 import 'package:bytebanktwo/model/contact.dart';
 import 'package:sqflite/sqflite.dart';
 
-class ContactDao{
-
+class ContactDao {
   static const String _tableName = 'contacts';
   static const String _id = 'id';
   static const String _name = 'name';
@@ -14,22 +13,32 @@ class ContactDao{
       '$_name TEXT, '
       '$_accountNumber INTEGER)';
 
-  Future<int> save(Contact contact) async{
+  Future<void> put(Contact contact) async {
     final Database db = await getDatabase();
     Map<String, dynamic> contactMap = _toMap(contact);
-    return db.insert(_tableName, contactMap);
+    // ignore: unnecessary_null_comparison
+    if (contact.id == null || contact.id == 0) {
+      db.insert(_tableName, contactMap);
+    } else {
+      db.update(
+        _tableName,
+        contactMap,
+        where: 'id = ?',
+        whereArgs: [contact.id],
+      );
+    }
   }
 
-  Future<List<Contact>> findAll()  async{
+  Future<List<Contact>> findAll() async {
     final Database db = await getDatabase();
     final List<Map<String, dynamic>> result = await db.query(_tableName);
     List<Contact> contacts = _toList(result);
     return contacts;
   }
 
-  Future<void> deleteContact(int id) async{
+  Future<void> delete(int id) async {
     final Database db = await getDatabase();
-    await db.delete(_tableName,where: 'id = ?',whereArgs: [id]);
+    await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -41,7 +50,7 @@ class ContactDao{
   }
 
   List<Contact> _toList(List<Map<String, dynamic>> result) {
-     final List<Contact> contacts = [];
+    final List<Contact> contacts = [];
     for (Map<String, dynamic> row in result) {
       final Contact contact = Contact(
         row[_id],

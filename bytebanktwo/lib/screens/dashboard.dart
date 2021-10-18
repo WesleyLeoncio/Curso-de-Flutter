@@ -1,3 +1,4 @@
+import 'package:bytebanktwo/routess/app_routes.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +27,7 @@ class Dashboard extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               child: InkWell( // Adiciona evento e efeito em um componente
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ContactsList(),
-                  ));
+                  Navigator.of(context).pushNamed(AppRoutes.contactList);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8.0),

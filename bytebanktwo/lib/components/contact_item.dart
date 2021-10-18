@@ -1,17 +1,17 @@
-import 'package:bytebanktwo/controll/contact_atualiza.dart';
 import 'package:bytebanktwo/model/contact.dart';
-
+import 'package:bytebanktwo/routess/app_routes.dart';
+import 'package:bytebanktwo/views/contact_list_recharge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ContactItem extends StatelessWidget {
   final Contact _contact;
+
   const ContactItem(this._contact, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //var contacts = Provider.of<ContactAtualiza>(context);
-    var contAtualiza = context.watch<ContactAtualiza>();
+    ContactListRecharge contactRecharge = context.watch<ContactListRecharge>();
     return Card(
       child: ListTile(
         leading: const Icon(Icons.monetization_on),
@@ -23,7 +23,12 @@ class ContactItem extends StatelessWidget {
           child: Row(
             children: <Widget>[
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    AppRoutes.contactForm,
+                    arguments: _contact,
+                  );
+                },
                 icon: const Icon(
                   Icons.edit,
                 ),
@@ -39,8 +44,7 @@ class ContactItem extends StatelessWidget {
                       actions: <Widget>[
                         ElevatedButton(
                           onPressed: () {
-                            contAtualiza.remove(_contact);
-                            //contAtualiza.notifyListeners();
+                            contactRecharge.removeContact(_contact);
                             Navigator.of(context).pop();
                           },
                           child: const Text("Sim"),
@@ -54,7 +58,6 @@ class ContactItem extends StatelessWidget {
                       ],
                     ),
                   );
-
                 },
                 icon: const Icon(Icons.delete),
                 color: Colors.red,
@@ -65,5 +68,4 @@ class ContactItem extends StatelessWidget {
       ),
     );
   }
-
 }

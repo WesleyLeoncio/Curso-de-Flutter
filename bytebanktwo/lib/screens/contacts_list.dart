@@ -1,10 +1,9 @@
 import 'package:bytebanktwo/components/contact_item.dart';
-import 'package:bytebanktwo/controll/contact_atualiza.dart';
-import 'package:bytebanktwo/database/dao/contact_dao.dart';
 import 'package:bytebanktwo/model/contact.dart';
-import 'package:bytebanktwo/screens/contacts_form.dart';
+import 'package:bytebanktwo/routess/app_routes.dart';
+import 'package:bytebanktwo/views/contact_list_recharge.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 
 class ContactsList extends StatefulWidget {
   const ContactsList({Key? key}) : super(key: key);
@@ -14,17 +13,16 @@ class ContactsList extends StatefulWidget {
 }
 
 class _ContactsListState extends State<ContactsList> {
-  final ContactDao _dao = ContactDao();
   @override
   Widget build(BuildContext context) {
-    var contAtualiza = context.watch<ContactAtualiza>();
+    ContactListRecharge contactRecharge = context.watch<ContactListRecharge>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contatos'),
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: const [],
-        future: contAtualiza.getAll(),
+        future: contactRecharge.getAll(),
         builder: (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -59,11 +57,10 @@ class _ContactsListState extends State<ContactsList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const ContactForm(),
-            ),
-          ).then((value) => setState((){})); // Atualiza os dados quando é salvo
+          Navigator.of(context).pushNamed(
+            AppRoutes.contactForm,
+            arguments: Contact(0,'',0),
+          );
         },
         child: const Icon(Icons.add),
       ),

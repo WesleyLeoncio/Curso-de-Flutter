@@ -1,8 +1,9 @@
-import 'package:bytebanktwo/components/editor_number.dart';
-import 'package:bytebanktwo/components/editor_text.dart';
-import 'package:bytebanktwo/database/dao/contact_dao.dart';
 import 'package:bytebanktwo/model/contact.dart';
+import 'package:bytebanktwo/views/contact_list_recharge.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:validatorless/validatorless.dart';
 
 class ContactForm extends StatefulWidget {
   const ContactForm({Key? key}) : super(key: key);
@@ -12,12 +13,13 @@ class ContactForm extends StatefulWidget {
 }
 
 class _ContactFormState extends State<ContactForm> {
-  final TextEditingController _controllerNome = TextEditingController();
-  final TextEditingController _controllerNconta = TextEditingController();
-  final ContactDao _dao = ContactDao();
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    final contactArgs = ModalRoute.of(context)?.settings.arguments as Contact;
+    final Contact contactNew = Contact(0, '', 0);
+    ContactListRecharge contactRecharge = context.watch<ContactListRecharge>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Novo Contato'),
@@ -29,14 +31,62 @@ class _ContactFormState extends State<ContactForm> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                EditorText(_controllerNome, 'Nome Completo'),
-                EditorNumber(_controllerNconta, 'Numero da Conta'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: TextFormField(
+                    validator: Validatorless.multiple([
+                      Validatorless.required("Nome Obrigatório"),
+                      Validatorless.min(
+                          5, "Nome deve ter no mínimo 6 Caracteres")
+                    ]),
+                    initialValue: contactArgs.name,
+                    onSaved: (value) {
+                      if (contactArgs.id != 0) {
+                        contactNew.id = contactArgs.id;
+                        contactNew.name = value.toString();
+                      } else {
+                        contactNew.name = value.toString();
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Nome Completo',
+                    ),
+                    style: const TextStyle(
+                      fontSize: 24.0,
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: TextFormField(
+                    validator: Validatorless.multiple([
+                      // responsavel pelas validações
+                      Validatorless.required("Numero da Conta Obrigatório"),
+                      Validatorless.number("Preencha o campo corretamente"),
+                    ]),
+                    initialValue: contactArgs.id == 0
+                        ? ''
+                        : contactArgs.nConta.toString(),
+                    onSaved: (value) {
+                      contactNew.nConta = int.tryParse(value.toString())!;
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Numero da Conta',
+                    ),
+                    style: const TextStyle(
+                      fontSize: 24.0,
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: SizedBox(
                     width: double.maxFinite,
                     child: ElevatedButton(
-                      onPressed: () => _criarContact(context),
+                      onPressed: () =>
+                          _saveContact(contactRecharge, contactNew),
                       child: const Text('Confirmar'),
                     ),
                   ),
@@ -49,16 +99,12 @@ class _ContactFormState extends State<ContactForm> {
     );
   }
 
-  void _criarContact(BuildContext context) {
-    final String? name = _controllerNome.text;
-    final int? nConta = int.tryParse(_controllerNconta.text);
-
-    var formValid = _formKey.currentState?.validate() ?? false;
-    if (formValid) {
-      if (name != null && nConta != null) {
-        final newContact = Contact(0, name, nConta);
-        _dao.save(newContact).then((id) => Navigator.pop(context));
-      }
+  void _saveContact(ContactListRecharge contactRecharge, Contact contactNew) {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      _formKey.currentState!.save();
+      contactRecharge.saveContact(contactNew);
+      Navigator.of(context).pop();
     }
   }
 }
