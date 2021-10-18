@@ -34,11 +34,13 @@ class _ContactFormState extends State<ContactForm> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: TextFormField(
-                    validator: Validatorless.multiple([
-                      Validatorless.required("Nome Obrigatório"),
-                      Validatorless.min(
-                          5, "Nome deve ter no mínimo 6 Caracteres")
-                    ]),
+                    validator: Validatorless.multiple(
+                      [
+                        Validatorless.required("Nome Obrigatório"),
+                        Validatorless.min(
+                            5, "Nome deve ter no mínimo 6 Caracteres")
+                      ],
+                    ),
                     initialValue: contactArgs.name,
                     onSaved: (value) {
                       if (contactArgs.id != 0) {
@@ -48,37 +50,30 @@ class _ContactFormState extends State<ContactForm> {
                         contactNew.name = value.toString();
                       }
                     },
-                    decoration: const InputDecoration(
-                      labelText: 'Nome Completo',
-                    ),
-                    style: const TextStyle(
-                      fontSize: 24.0,
-                    ),
-                    keyboardType: TextInputType.text,
+                    decoration:
+                        const InputDecoration(labelText: 'Nome Completo'),
+                    style: const TextStyle(fontSize: 24.0),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: TextFormField(
-                    validator: Validatorless.multiple([
-                      // responsavel pelas validações
-                      Validatorless.required("Numero da Conta Obrigatório"),
-                      Validatorless.number("Preencha o campo corretamente"),
-                    ]),
-                    initialValue: contactArgs.id == 0
-                        ? ''
-                        : contactArgs.nConta.toString(),
-                    onSaved: (value) {
-                      contactNew.nConta = int.tryParse(value.toString())!;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Numero da Conta',
-                    ),
-                    style: const TextStyle(
-                      fontSize: 24.0,
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
+                      validator: Validatorless.multiple(
+                        [
+                          Validatorless.required("Numero da Conta Obrigatório"),
+                          Validatorless.number("Preencha o campo corretamente"),
+                        ],
+                      ),
+                      initialValue: contactArgs.id == 0
+                          ? ''
+                          : contactArgs.nConta.toString(),
+                      onSaved: (value) {
+                        contactNew.nConta = int.tryParse(value.toString())!;
+                      },
+                      decoration:
+                          const InputDecoration(labelText: 'Numero da Conta'),
+                      style: const TextStyle(fontSize: 24.0),
+                      keyboardType: TextInputType.number),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
