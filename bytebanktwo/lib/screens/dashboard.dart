@@ -9,6 +9,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +43,7 @@ class Dashboard extends StatelessWidget {
                         color: Colors.white,
                         size: 24.0,
                       ),
-                      Text('Contactos',
+                      Text('Contatos',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,

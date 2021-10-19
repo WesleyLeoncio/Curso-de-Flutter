@@ -9,7 +9,8 @@ import 'screens/dashboard.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
-      create: (context) => ContactListRecharge(), child: const ByteBankAppTwo()));
+      create: (context) => ContactListRecharge(),
+      child: const ByteBankAppTwo()));
 }
 
 class ByteBankAppTwo extends StatelessWidget {
@@ -18,10 +19,7 @@ class ByteBankAppTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          colorScheme: const ColorScheme.light()
-              .copyWith(primary: Colors.green[900])
-              .copyWith(secondary: Colors.green[700])),
+      theme: tema(),
       routes: {
         AppRoutes.home: (context) => const Dashboard(),
         AppRoutes.contactList: (context) => const ContactsList(),
@@ -29,4 +27,18 @@ class ByteBankAppTwo extends StatelessWidget {
       },
     );
   }
+}
+////////////
+ThemeData tema(){
+  return ThemeData(
+    colorScheme: const ColorScheme.light()
+        .copyWith(primary: Colors.green[900])
+        .copyWith(secondary: Colors.green[700]),
+    fontFamily: 'Georgia',
+    textTheme: const TextTheme(
+      headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      headline6: TextStyle(fontSize: 28.0, fontStyle: FontStyle.italic),
+      bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+    ),
+  );
 }

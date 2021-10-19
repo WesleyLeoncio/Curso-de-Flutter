@@ -20,6 +20,7 @@ class _ContactsListState extends State<ContactsList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contatos'),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: const [],

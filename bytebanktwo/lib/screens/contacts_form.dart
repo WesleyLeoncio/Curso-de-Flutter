@@ -25,6 +25,7 @@ class _ContactFormState extends State<ContactForm> {
         title: contactArgs.id == 0
             ? const Text('Novo Contato')
             : const Text('Alterar Contato'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Form(
