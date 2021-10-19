@@ -17,18 +17,23 @@ class ContactItem extends StatelessWidget {
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
       closeOnScroll: true,
-      child: ListTile(
-        leading: const Icon(Icons.monetization_on),
-        title: Text(_contact.name, style: const TextStyle(fontSize: 24.0)),
-        subtitle: Text(_contact.nConta.toString(),
-            style: const TextStyle(fontSize: 16.0)),
-        trailing: const Icon(Icons.arrow_back_ios),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListTile(
+          tileColor: Colors.green[50],
+          leading: const Icon(Icons.monetization_on, color: Colors.green,),
+          title: Text(_contact.name, style: const TextStyle(fontSize: 20.0)),
+          subtitle: Text(_contact.nConta.toString(),
+              style: const TextStyle(fontSize: 16.0)),
+          trailing: const Icon(Icons.touch_app_outlined, color: Colors.green,),
+
+        ),
       ),
       secondaryActions: <Widget>[
         IconSlideAction(
           caption: 'Editar',
-          color: Colors.black45,
-          icon: Icons.edit,
+          color: Colors.deepOrange[400],
+          icon: Icons.edit, foregroundColor: Colors.white,
           onTap: () {
             Navigator.of(context).pushNamed(
               AppRoutes.contactForm,
@@ -38,7 +43,7 @@ class ContactItem extends StatelessWidget {
         ),
         IconSlideAction(
           caption: 'Deletar',
-          color: Colors.red,
+          color: Colors.red[400],
           icon: Icons.delete,
           onTap: () {
             showDialog(

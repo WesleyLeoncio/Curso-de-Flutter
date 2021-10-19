@@ -1,14 +1,11 @@
-import 'package:bytebanktwo/routess/app_routes.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:flutter/material.dart';
-
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -25,9 +22,12 @@ class Dashboard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Material(
               color: Theme.of(context).colorScheme.primary,
-              child: InkWell( // Adiciona evento e efeito em um componente
+              child: InkWell(
+                // Adiciona evento e efeito em um componente
                 onTap: () {
-                  Navigator.of(context).pushNamed(AppRoutes.contactList);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ContactsList(),
+                  ));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8.0),

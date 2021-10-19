@@ -22,7 +22,9 @@ class _ContactFormState extends State<ContactForm> {
     ContactListRecharge contactRecharge = context.watch<ContactListRecharge>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novo Contato'),
+        title: contactArgs.id == 0
+            ? const Text('Novo Contato')
+            : const Text('Alterar Contato'),
       ),
       body: SingleChildScrollView(
         child: Form(
