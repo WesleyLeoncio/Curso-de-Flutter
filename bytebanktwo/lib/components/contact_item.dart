@@ -18,7 +18,7 @@ class ContactItem extends StatelessWidget {
       actionExtentRatio: 0.25,
       closeOnScroll: true,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(4.0),
         child: ListTile(
           tileColor: Colors.green[50],
           leading: const Icon(Icons.monetization_on, color: Colors.green,),

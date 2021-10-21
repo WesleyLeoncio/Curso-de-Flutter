@@ -6,33 +6,32 @@ import 'package:bytebanktwo/views/contact_list_recharge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'components/menu_app.dart';
+import 'screens/dashboard.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
       create: (context) => ContactListRecharge(),
-      child: const MayApp()));
+      child: const ByteBankAppTwo()));
 }
 
-class MayApp extends StatelessWidget {
-  const MayApp({Key? key}) : super(key: key);
+class ByteBankAppTwo extends StatelessWidget {
+  const ByteBankAppTwo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: tema(),
-      home: const MenuApp(),
       routes: {
+        AppRoutes.home: (context) => const Dashboard(),
         AppRoutes.contactList: (context) => const ContactsList(),
         AppRoutes.contactForm: (context) => const ContactForm(),
-        AppRoutes.contacTransactionFeed:(context) => const TransactionsList(),
+        AppRoutes.contacTransactionFeed:(context) => TransactionsList(),
       },
     );
   }
 }
-
 ////////////
-ThemeData tema() {
+ThemeData tema(){
   return ThemeData(
     colorScheme: const ColorScheme.light()
         .copyWith(primary: Colors.green[900])

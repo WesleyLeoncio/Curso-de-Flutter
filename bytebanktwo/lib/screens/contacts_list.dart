@@ -19,7 +19,7 @@ class _ContactsListState extends State<ContactsList> {
     ContactListRecharge contactRecharge = context.watch<ContactListRecharge>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contatos'),
+        title: const Text('Transferir'),
         centerTitle: true,
       ),
       body: FutureBuilder<List<Contact>>(
