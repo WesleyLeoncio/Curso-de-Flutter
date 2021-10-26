@@ -9,6 +9,16 @@ class Dashboard extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Dashboard'),
           centerTitle: true,
+          //elevation: 0,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Color(0xFF283c86), Color(0xFF45a247)]
+              ),
+            ),
+          ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -23,4 +33,3 @@ class Dashboard extends StatelessWidget {
    );
   }
 }
-

@@ -1,55 +1,65 @@
-import 'package:bytebanktwo/model/contact.dart';
+import 'package:bytebanktwo/components/centered_message.dart';
+import 'package:bytebanktwo/components/progress.dart';
+import 'package:bytebanktwo/components/transaction_item.dart';
+import 'package:bytebanktwo/http/webClients/transaction_webclient.dart';
 import 'package:bytebanktwo/model/transaction.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsList extends StatefulWidget {
-
-   const TransactionsList({Key? key}) : super(key: key);
+  const TransactionsList({Key? key}) : super(key: key);
 
   @override
   State<TransactionsList> createState() => _TransactionsListState();
 }
 
 class _TransactionsListState extends State<TransactionsList> {
-  final List<Transaction> transactions = [];
+  final TransactionWebClient _webclient = TransactionWebClient();
 
   @override
   Widget build(BuildContext context) {
-    transactions.add(Transaction(100.0, Contact(0, 'Alex', 1000)));
-    transactions.add(Transaction(100.0, Contact(0, 'Alex', 1000)));
-    transactions.add(Transaction(100.0, Contact(0, 'Alex', 1000)));
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transactions'),
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xFF283c86), Color(0xFF45a247)]),
+          ),
+        ),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          final Transaction transaction = transactions[index];
-          return Card(
-            child: ListTile(
-              tileColor: Colors.green[50],
-              leading: const Icon(Icons.monetization_on, color: Colors.green,),
-              title: Text(
-                transaction.value.toString(),
-                style: const TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text(
-                transaction.contact.nConta.toString(),
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-          );
+      body: FutureBuilder<List<Transaction>>(
+        future: _webclient.findAll(),
+        builder: (context, AsyncSnapshot<List<Transaction>> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting: // load
+              return const Progress();
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                final List<Transaction>? transactions = snapshot.data;
+                if (transactions!.isNotEmpty) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      final Transaction transaction = transactions[index];
+                      return TransactionItem(transaction);
+                    },
+                    itemCount: transactions.length,
+                  );
+                }
+                return const CenteredMessage('Lista Vazia',
+                    icon: Icons.warning);
+              }
+          }
+          return const CenteredMessage('Erro na api de arquivos :(',
+              icon: Icons.error);
         },
-        itemCount: transactions.length,
       ),
     );
   }
 }
-

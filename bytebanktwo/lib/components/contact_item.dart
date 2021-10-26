@@ -1,5 +1,5 @@
 import 'package:bytebanktwo/model/contact.dart';
-import 'package:bytebanktwo/routess/app_routes.dart';
+import 'package:bytebanktwo/routes/app_routes.dart';
 import 'package:bytebanktwo/views/contact_list_recharge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 
 class ContactItem extends StatelessWidget {
   final Contact _contact;
+  final Function onClick;
 
-  const ContactItem(this._contact, {Key? key}) : super(key: key);
+  const ContactItem(this._contact, {Key? key,required this.onClick}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +23,11 @@ class ContactItem extends StatelessWidget {
         child: ListTile(
           tileColor: Colors.green[50],
           leading: const Icon(Icons.monetization_on, color: Colors.green,),
+          onTap: ()=> onClick(),
           title: Text(_contact.name, style: const TextStyle(fontSize: 20.0)),
-          subtitle: Text(_contact.nConta.toString(),
+          subtitle: Text(_contact.accountNumber.toString(),
               style: const TextStyle(fontSize: 16.0)),
           trailing: const Icon(Icons.touch_app_outlined, color: Colors.green,),
-
         ),
       ),
       secondaryActions: <Widget>[

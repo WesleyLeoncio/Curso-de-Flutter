@@ -24,7 +24,13 @@ class _MenuAppState extends State<MenuApp> {
     return Scaffold(
       body: _pageOption[selectdedPage],
       bottomNavigationBar: ConvexAppBar(
-        backgroundColor: Colors.green[900],
+        style: TabStyle.reactCircle,
+        backgroundColor: Colors.green,
+        gradient: const LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Color(0xFF283c86), Color(0xFF45a247)]
+        ),
         items: listTabItem() ,
         initialActiveIndex: 0, //optional, default as 0
         onTap: (int index) {

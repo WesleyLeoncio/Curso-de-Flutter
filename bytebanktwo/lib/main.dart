@@ -1,4 +1,4 @@
-import 'package:bytebanktwo/routess/app_routes.dart';
+import 'package:bytebanktwo/routes/app_routes.dart';
 import 'package:bytebanktwo/screens/contacts_form.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:bytebanktwo/screens/transactions_list.dart';
@@ -10,13 +10,11 @@ import 'components/menu_app.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
-      create: (context) => ContactListRecharge(),
-      child: const MayApp()));
+      create: (context) => ContactListRecharge(), child: const MayApp()));
 }
 
 class MayApp extends StatelessWidget {
   const MayApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,7 +23,7 @@ class MayApp extends StatelessWidget {
       routes: {
         AppRoutes.contactList: (context) => const ContactsList(),
         AppRoutes.contactForm: (context) => const ContactForm(),
-        AppRoutes.contacTransactionFeed:(context) => const TransactionsList(),
+        AppRoutes.transactionFeed: (context) => const TransactionsList(),
       },
     );
   }
@@ -35,7 +33,7 @@ class MayApp extends StatelessWidget {
 ThemeData tema() {
   return ThemeData(
     colorScheme: const ColorScheme.light()
-        .copyWith(primary: Colors.green[900])
+        .copyWith(primary: Colors.green)
         .copyWith(secondary: Colors.green[700]),
     fontFamily: 'Georgia',
     textTheme: const TextTheme(

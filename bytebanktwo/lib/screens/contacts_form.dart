@@ -26,6 +26,15 @@ class _ContactFormState extends State<ContactForm> {
             ? const Text('Novo Contato')
             : const Text('Alterar Contato'),
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xFF283c86), Color(0xFF45a247)]
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -69,9 +78,9 @@ class _ContactFormState extends State<ContactForm> {
                       ),
                       initialValue: contactArgs.id == 0
                           ? ''
-                          : contactArgs.nConta.toString(),
+                          : contactArgs.accountNumber.toString(),
                       onSaved: (value) {
-                        contactNew.nConta = int.tryParse(value.toString())!;
+                        contactNew.accountNumber = int.tryParse(value.toString())!;
                       },
                       decoration:
                           const InputDecoration(labelText: 'Numero da Conta'),
