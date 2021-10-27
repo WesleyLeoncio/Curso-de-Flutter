@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:teste_componentes/components/centered_message.dart';
+import 'package:teste_componentes/components/progress.dart';
 import 'package:teste_componentes/http/webClients/veiculo_webcliente.dart';
 import 'package:teste_componentes/model/veiculo.dart';
 import 'package:teste_componentes/screens/carro_info.dart';
@@ -40,22 +42,7 @@ class _CarroTelaState extends State<CarroTela> {
               // TODO: Handle this case.
                 break;
               case ConnectionState.waiting:
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const <Widget>[
-                      CircularProgressIndicator(),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          'Loading...',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                return const Progress();
               case ConnectionState.active:
               // TODO: Handle this case.
                 break;
@@ -97,7 +84,11 @@ class _CarroTelaState extends State<CarroTela> {
                   }
                 }
             }
-            return const Text('Erro');
+            return CenteredMessage(
+              'Tempo Limite estourou ;(',
+              icon: Icons.error_outline,
+
+            );
           },
         ));
   }
