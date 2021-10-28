@@ -48,8 +48,8 @@ class CardBuid extends StatelessWidget {
                 Hero(
                   tag: _veiculo.imagem+"$_index",
                   child: Container(
-                    height: 95.0,
-                    width: 95.0,
+                    height: 110.0,
+                    width: 150.0,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(_veiculo.imagem), fit: BoxFit.contain)),
@@ -71,9 +71,9 @@ class CardBuid extends StatelessWidget {
                       fontFamily: 'Varela'),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(2.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: Container(
-                    color: const Color(0xFFEBEBEB),
+                    color: const Color(0xFFEBEBEB), //separador
                     height: 1.0,
                   ),
                 ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:teste_componentes/components/centered_message.dart';
 import 'package:teste_componentes/components/progress.dart';
@@ -34,17 +33,17 @@ class _CarroTelaState extends State<CarroTela> {
             ),
           ),
         ),
-       body: FutureBuilder<List<Veiculo>>(
+        body: FutureBuilder<List<Veiculo>>(
           future: _webClient.findAll(),
           builder: (context, AsyncSnapshot<List<Veiculo>> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
-              // TODO: Handle this case.
+                // TODO: Handle this case.
                 break;
               case ConnectionState.waiting:
                 return const Progress();
               case ConnectionState.active:
-              // TODO: Handle this case.
+                // TODO: Handle this case.
                 break;
               case ConnectionState.done:
                 if (snapshot.hasData) {
@@ -56,14 +55,14 @@ class _CarroTelaState extends State<CarroTela> {
                         return Card(
                           child: ListTile(
                             onTap: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) {
-                                    return CarroInfo(veiculo);
-                                  }));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return CarroInfo(veiculo);
+                              }));
                             },
                             title: Text(veiculo.modelo.nomeModelo.toString()),
                             subtitle:
-                            Text(veiculo.modelo.marca.nomeMarca.toString()),
+                                Text(veiculo.modelo.marca.nomeMarca.toString()),
                             trailing: SizedBox(
                               width: 100,
                               child: Row(
@@ -84,10 +83,10 @@ class _CarroTelaState extends State<CarroTela> {
                   }
                 }
             }
-            return CenteredMessage(
-              'Tempo Limite estourou ;(',
+            return const CenteredMessage(
+              message: 'Tempo Limite Excedido ;(',
               icon: Icons.error_outline,
-
+              colorIcon: Colors.red,
             );
           },
         ));

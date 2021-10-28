@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teste_componentes/components/centered_message.dart';
 
 class MarcaTela extends StatefulWidget {
   const MarcaTela({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class MarcaTela extends StatefulWidget {
 }
 
 class _MarcaTelaState extends State<MarcaTela> {
- // final MarcaionWebClient _webclient = MarcaionWebClient();
+  // final MarcaionWebClient _webclient = MarcaionWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,10 @@ class _MarcaTelaState extends State<MarcaTela> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const <Widget>[
-          Center(
-            child: Text('Marca'),
+          CenteredMessage(
+            message: 'Tempo Limite Excedido ;(',
+            icon: Icons.error_outline,
+            colorIcon: Colors.orange,
           )
         ],
       ),

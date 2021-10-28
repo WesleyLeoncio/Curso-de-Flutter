@@ -5,9 +5,13 @@ class CenteredMessage extends StatelessWidget {
   final IconData icon;
   final double iconSize;
   final double fontSize;
+  final Color colorIcon;
 
-   const CenteredMessage(
-    this.message, {Key? key, required this.icon,
+  const CenteredMessage({
+    Key? key,
+    required this.message,
+    required this.icon,
+    required this.colorIcon,
     this.iconSize = 64,
     this.fontSize = 24,
   }) : super(key: key);
@@ -23,6 +27,7 @@ class CenteredMessage extends StatelessWidget {
             child: Icon(
               icon,
               size: iconSize,
+              color: colorIcon,
             ),
           ),
           Padding(

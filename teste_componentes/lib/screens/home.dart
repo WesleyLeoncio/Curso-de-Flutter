@@ -55,9 +55,9 @@ class _HomeState extends State<Home> {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 200,
-                        childAspectRatio: 0.8,
+                        childAspectRatio: 0.74,
                         crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 15.0,
+                        mainAxisSpacing: 20.0,
                       ),
                       itemBuilder: (context, index) {
                         final Veiculo veiculo = veiculos[index];
@@ -70,8 +70,9 @@ class _HomeState extends State<Home> {
                 }
             }
             return const CenteredMessage(
-              'Tempo Limite estourou ;(',
+              message: 'Tempo Limite Excedido ;(',
               icon: Icons.error_outline,
+              colorIcon: Colors.red,
             );
           },
         ));
