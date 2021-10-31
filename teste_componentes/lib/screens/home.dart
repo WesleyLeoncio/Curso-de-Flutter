@@ -3,6 +3,7 @@ import 'package:teste_componentes/components/card_buid.dart';
 import 'package:teste_componentes/components/centered_message.dart';
 import 'package:teste_componentes/components/progress.dart';
 import 'package:teste_componentes/http/webClients/veiculo_webcliente.dart';
+import 'package:teste_componentes/images/comidas_imagens.dart';
 import 'package:teste_componentes/model/veiculo.dart';
 
 class Home extends StatefulWidget {
@@ -13,39 +14,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final String img0 =
-      'https://img.itdg.com.br/tdg/images/blog/uploads/2017/12/bolodesorvete-300x206.png';
 
   // Imagem para teste
   final VeiculoWebClient _webClient = VeiculoWebClient();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white70,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: const Icon(
-            Icons.menu,
-            color: Colors.black,
-          ),
-          title: const Text(
-            "Home",
-            style: TextStyle(color: Colors.black87),
-          ),
-        ),
+    return  Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, condition) {
+          return <Widget>[
+            SliverAppBar(
+              backgroundColor: Colors.transparent,
+              leading: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.menu, color: Color(0xFFfc4a1a),),
+              ),
+              floating: true,
+              expandedHeight: 205.0,
+                flexibleSpace: const FlexibleSpaceBar(
+                  background: Image(
+                    image: AssetImage('lib/images/CheffOn.png'),
+                     fit: BoxFit.cover,
+                  ),
+                )
+            ),
+          ];
+        },
         body: FutureBuilder<List<Veiculo>>(
           future: _webClient.findAll(),
           builder: (context, AsyncSnapshot<List<Veiculo>> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
-                // TODO: Handle this case.
+              // TODO: Handle this case.
                 break;
               case ConnectionState.waiting:
                 return const Progress();
               case ConnectionState.active:
-                // TODO: Handle this case.
+              // TODO: Handle this case.
                 break;
               case ConnectionState.done:
                 if (snapshot.hasData) {
@@ -53,7 +59,7 @@ class _HomeState extends State<Home> {
                   if (veiculos!.isNotEmpty) {
                     return GridView.builder(
                       gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                      const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 200,
                         childAspectRatio: 0.74,
                         crossAxisSpacing: 10.0,
@@ -61,7 +67,7 @@ class _HomeState extends State<Home> {
                       ),
                       itemBuilder: (context, index) {
                         final Veiculo veiculo = veiculos[index];
-                        veiculo.imagem = img0; // para teste
+                        veiculo.imagem = listaimg[index]; // para teste
                         return CardBuid(veiculo, index);
                       },
                       itemCount: veiculos.length,
@@ -75,6 +81,8 @@ class _HomeState extends State<Home> {
               colorIcon: Colors.red,
             );
           },
-        ));
+        ),
+      ),
+    );
   }
 }

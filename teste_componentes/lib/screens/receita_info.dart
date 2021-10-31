@@ -18,19 +18,7 @@ class ReceitaInfo extends StatelessWidget {
           title: const Text('Receita')),
       body: ListView(
         children: [
-          const SizedBox(height: 15.0),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
-            child: Text(
-              _veiculo.modelo.nomeModelo.toString(),
-              style: const TextStyle(
-                  fontFamily: 'Varela',
-                  fontSize: 42.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange),
-            ),
-          ),
-          const SizedBox(height: 15.0),
+          const SizedBox(height: 8.0),
           Hero(
             tag: _veiculo.imagem + "$_index",
             child: Container(
@@ -43,6 +31,16 @@ class ReceitaInfo extends StatelessWidget {
                     ),
                     fit: BoxFit.contain),
               ),
+            ),
+          ),
+          Center(
+            child: Text(
+              _veiculo.modelo.nomeModelo.toString(),
+              style: const TextStyle(
+                  fontFamily: 'Varela',
+                  fontSize: 42.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange),
             ),
           ),
         ],
