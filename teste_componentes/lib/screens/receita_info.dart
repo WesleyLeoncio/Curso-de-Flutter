@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:teste_componentes/model/veiculo.dart';
 

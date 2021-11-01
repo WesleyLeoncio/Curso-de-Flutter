@@ -17,7 +17,7 @@ class _Menu2State extends State<Menu2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pageOption.elementAt(selectdedPage),
+      body: _pageOption[selectdedPage],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -39,6 +39,7 @@ class _Menu2State extends State<Menu2> {
         selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.orange[300],
         showUnselectedLabels: false,
+
         //showSelectedLabels: false,
         iconSize: 30,
         ///////////////////////////////////
