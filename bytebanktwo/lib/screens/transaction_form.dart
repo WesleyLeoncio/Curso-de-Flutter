@@ -1,3 +1,4 @@
+import 'package:bytebanktwo/components/transaction_auth_dialog.dart';
 import 'package:bytebanktwo/http/webClients/transaction_webclient.dart';
 import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/model/transaction.dart';
@@ -27,8 +28,7 @@ class _TransactionFormState extends State<TransactionForm> {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [Color(0xFF283c86), Color(0xFF45a247)]
-            ),
+                colors: [Color(0xFF283c86), Color(0xFF45a247)]),
           ),
         ),
       ),
@@ -75,12 +75,22 @@ class _TransactionFormState extends State<TransactionForm> {
                           double.tryParse(_valueController.text);
                       final transactionCreated =
                           Transaction(value!, widget.contact);
-                      _webClient.save(transactionCreated).then((transaction) {
-                        // ignore: unnecessary_null_comparison
-                        if (transaction != null) {
-                          Navigator.of(context).pop();
-                        }
-                      });
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return TransactionAuthDialog(
+                              onConfirm: (String password) {
+                                _webClient
+                                    .save(transactionCreated, password)
+                                    .then((transaction) {
+                                  // ignore: unnecessary_null_comparison
+                                  if (transaction != null) {
+                                    Navigator.pop(context);
+                                  }
+                                });
+                              },
+                            );
+                          });
                     },
                   ),
                 ),

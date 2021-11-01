@@ -1,4 +1,3 @@
-import 'package:bytebanktwo/components/transaction_auth_dialog.dart';
 import 'package:bytebanktwo/routes/app_routes.dart';
 import 'package:bytebanktwo/screens/contacts_form.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
@@ -20,7 +19,7 @@ class MayApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: tema(),
-      home: const TransactionAuthDialog(),
+      home: const MenuApp(),
       routes: {
         AppRoutes.contactList: (context) => const ContactsList(),
         AppRoutes.contactForm: (context) => const ContactForm(),
