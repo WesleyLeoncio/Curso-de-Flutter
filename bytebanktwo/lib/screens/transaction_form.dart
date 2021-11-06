@@ -114,17 +114,13 @@ class _TransactionFormState extends State<TransactionForm> {
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
     try {
-      Transaction transaction =
-          await _webClient.save(transactionCreated, password);
-      // ignore: unnecessary_null_comparison
-      if (transaction != null) {
-        await showDialog(
-            context: context,
-            builder: (contextDialog) {
-              return const SuccessDialog("successful transaction");
-            });
-        Navigator.pop(context);
-      }
+      await _webClient.save(transactionCreated, password);
+      await showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return const SuccessDialog("successful transaction");
+          });
+      Navigator.pop(context);
     } catch (err) {
       await showDialog(
           context: context,
@@ -133,7 +129,7 @@ class _TransactionFormState extends State<TransactionForm> {
           });
     }
   }
-  /* Antes de refatorar
+/* Antes de refatorar
   void _save(Transaction transactionCreated, String password, BuildContext context)async{
     await _webClient
         .save(transactionCreated, password)
