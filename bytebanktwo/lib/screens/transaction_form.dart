@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bytebanktwo/components/mensage/failure_dialog.dart';
 import 'package:bytebanktwo/components/mensage/success_dialog.dart';
 import 'package:bytebanktwo/components/transaction_auth_dialog.dart';
@@ -5,6 +7,7 @@ import 'package:bytebanktwo/http/webClients/transaction_webclient.dart';
 import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/model/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -20,9 +23,10 @@ class _TransactionFormState extends State<TransactionForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebClient _webClient = TransactionWebClient();
-
+  final String transactionId = const Uuid().v4();
   @override
   Widget build(BuildContext context) {
+    debugPrint('trasaction form id $transactionId');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nova Transação'),
@@ -87,7 +91,7 @@ class _TransactionFormState extends State<TransactionForm> {
                           final double? value =
                               double.tryParse(_valueController.text);
                           final transactionCreated =
-                              Transaction(value!, widget.contact);
+                              Transaction(transactionId,value!, widget.contact);
                           showDialog(
                               context: context,
                               builder: (contextDialog) {
@@ -111,6 +115,7 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 
+/*
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
     try {
@@ -122,30 +127,53 @@ class _TransactionFormState extends State<TransactionForm> {
           });
       Navigator.pop(context);
     } catch (err) {
-      await showDialog(
+       showDialog(
           context: context,
           builder: (contextDialog) {
             return FailureDialog(err.toString());
           });
     }
-  }
-/* Antes de refatorar
-  void _save(Transaction transactionCreated, String password, BuildContext context)async{
-    await _webClient
-        .save(transactionCreated, password)
-        .then((transaction) {
-      // ignore: unnecessary_null_comparison
-      if (transaction != null) {
-        showDialog(context: context, builder: (contextDialog){
-          return const SuccessDialog('successful transaction');
-        }).then((value) => Navigator.pop(context));
-
-      }
-    }).catchError((err){
-      showDialog(context: context, builder: (contextDialog){
-        return FailureDialog(err.message);
-      });
-    },test: (err) => err is Exception);
   }*/
 
+  void _save(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    Transaction transaction =
+        await _send(transactionCreated, password, context);
+    _showSuccessfulMessage(transaction, context);
+  }
+
+  Future<Transaction> _send(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    final Transaction transaction =
+        await _webClient.save(transactionCreated, password).catchError((e) {
+      _showFailureMessage(context, msg: 'timeout submitting the transaction');
+    }, test: (e) => e is TimeoutException).catchError((e) {
+      _showFailureMessage(context, msg: e.message);
+    }, test: (e) => e is HttpException).catchError((e) {
+      _showFailureMessage(context);
+    }, test: (e) => e is Exception);
+    return transaction;
+  }
+
+  Future _showSuccessfulMessage(
+      Transaction transaction, BuildContext context) async {
+    // ignore: unnecessary_null_comparison
+    if (transaction != null) {
+      await showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return const SuccessDialog('successful transaction');
+          });
+      Navigator.pop(context);
+    }
+  }
+
+  Future _showFailureMessage(BuildContext context,
+      {String msg = 'Unkown error'}) async {
+    await showDialog(
+        context: context,
+        builder: (contextDialog) {
+          return FailureDialog(msg);
+        });
+  }
 }
