@@ -37,7 +37,7 @@ class _TransactionsListState extends State<TransactionsList> {
             case ConnectionState.none:
               break;
             case ConnectionState.waiting: // load
-              return const Progress();
+              return const Progress(titulo: 'Loading...');
             case ConnectionState.active:
               break;
             case ConnectionState.done:
