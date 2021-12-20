@@ -7,36 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:614670559781:android:f56ae760980c4f4620adcc",
-        "android_client_info": {
-          "package_name": "br.com.alura.bytebank"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "614670559781-vupovt3agv9u7s224rbmcc8om1v4c0g0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDM6gAHx_WIjITI2OcGjGfropaHQw5C8oA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "614670559781-vupovt3agv9u7s224rbmcc8om1v4c0g0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:614670559781:android:494a2389e528a8a020adcc",
+        "mobilesdk_app_id": "1:614670559781:android:6933e8ef48b804d820adcc",
         "android_client_info": {
           "package_name": "com.example.bytebanktwo"
         }
