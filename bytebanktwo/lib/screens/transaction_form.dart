@@ -7,6 +7,7 @@ import 'package:bytebanktwo/components/transaction_auth_dialog.dart';
 import 'package:bytebanktwo/http/webClients/transaction_webclient.dart';
 import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/model/transaction.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
@@ -50,10 +51,11 @@ class _TransactionFormState extends State<TransactionForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                 Visibility(
+                Visibility(
                     child: const Progress(
-                  titulo: 'Sending...',
-                ),visible: _sending),
+                      titulo: 'Sending...',
+                    ),
+                    visible: _sending),
                 Text(
                   widget.contact.name,
                   style: const TextStyle(
@@ -82,7 +84,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     style: const TextStyle(fontSize: 24.0),
                     decoration: const InputDecoration(labelText: 'Value'),
                     keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    const TextInputType.numberWithOptions(decimal: true),
                   ),
                 ),
                 Padding(
@@ -90,13 +92,12 @@ class _TransactionFormState extends State<TransactionForm> {
                   child: SizedBox(
                     width: double.maxFinite,
                     child: ElevatedButton(
-
                       child: const Text('Transfer'),
                       onPressed: () {
                         final isValid = _formKey.currentState!.validate();
                         if (isValid) {
                           final double? value =
-                              double.tryParse(_valueController.text);
+                          double.tryParse(_valueController.text);
                           final transactionCreated = Transaction(
                               transactionId, value!, widget.contact);
                           showDialog(
@@ -122,54 +123,44 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 
-/*
   void _save(Transaction transactionCreated, String password,
-      BuildContext context) async {
-    try {
-      await _webClient.save(transactionCreated, password);
-      await showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return const SuccessDialog("successful transaction");
-          });
-      Navigator.pop(context);
-    } catch (err) {
-       showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog(err.toString());
-          });
-    }
-  }*/
-
-  void _save(Transaction transactionCreated, String password,
-      BuildContext context) async {
-    Transaction transaction =
-        await _send(transactionCreated, password, context);
-    _showSuccessfulMessage(transaction, context);
-
-  }
-
-  Future<Transaction> _send(Transaction transactionCreated, String password,
       BuildContext context) async {
     setState(() {
       _sending = true;
     });
-    final Transaction transaction =
-        await _webClient.save(transactionCreated, password).catchError((e) {
-      _showFailureMessage(context, msg: 'timeout submitting the transaction');
-    }, test: (e) => e is TimeoutException).catchError((e) {
+    await _send(transactionCreated, password, context);
+  }
+
+  Future<void> _send(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    try {
+      final Transaction transaction =
+      await _webClient.save(transactionCreated, password);
+      _showSuccessfulMessage(transaction, context);
+      Navigator.pop(context);
+    } on TimeoutException catch (e) {
+      if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+        FirebaseCrashlytics.instance.setCustomKey('exeption', e.toString());
+        FirebaseCrashlytics.instance
+            .setCustomKey('http_body)', transactionCreated.toString());
+        FirebaseCrashlytics.instance.recordError(e, null);
+      }
+
+      _showFailureMessage(context, msg: e.message.toString());
+    } on HttpException catch (e) {
+      if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+        FirebaseCrashlytics.instance.setCustomKey('exeption', e.toString());
+        FirebaseCrashlytics.instance.setCustomKey('http_code', e.statusCode);
+        FirebaseCrashlytics.instance.recordError(e, null);
+      }
       _showFailureMessage(context, msg: e.message);
-    }, test: (e) => e is HttpException).catchError((e) {
-      _showFailureMessage(context);
-    }, test: (e) => e is Exception).whenComplete((){
-        setState(() {
-          setState(() {
-            _sending = false;
-          });
-        });
-        });
-    return transaction;
+    } on Exception catch (e) {
+      _showFailureMessage(context, msg: e.toString());
+    } finally {
+      setState(() {
+        _sending = false;
+      });
+    }
   }
 
   Future _showSuccessfulMessage(

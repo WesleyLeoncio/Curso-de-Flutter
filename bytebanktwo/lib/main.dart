@@ -3,12 +3,29 @@ import 'package:bytebanktwo/screens/contacts_form.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:bytebanktwo/screens/transactions_list.dart';
 import 'package:bytebanktwo/views/contact_list_recharge.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// verifica se está no modo debug
+import 'package:flutter/foundation.dart' show kDebugMode;
 
 import 'components/menu_app.dart';
 
-void main() {
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  if (kDebugMode) { // se estive desativa
+    await FirebaseCrashlytics.instance
+        .setCrashlyticsCollectionEnabled(false);
+  } else { // ativa
+    await FirebaseCrashlytics.instance
+        .setCrashlyticsCollectionEnabled(true);
+    FirebaseCrashlytics.instance.setUserIdentifier('usuario2');
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  }
+
   runApp(ChangeNotifierProvider(
       create: (context) => ContactListRecharge(), child: const MayApp()));
 }

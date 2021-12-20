@@ -28,7 +28,7 @@ class TransactionWebClient {
       return Transaction.fromJson(jsonDecode(response.body));
     }
 
-    throw HttpException(_statusCodeResponses(response.statusCode));
+    throw HttpException(_statusCodeResponses(response.statusCode),response.statusCode);
   }
 
   String _statusCodeResponses(int statusCode) {
@@ -47,6 +47,7 @@ class TransactionWebClient {
 
 class HttpException implements Exception {
   final String message;
+  final int statusCode;
 
-  HttpException(this.message);
+  HttpException(this.message, this.statusCode);
 }
