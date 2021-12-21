@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bytebanktwo/routes/app_routes.dart';
 import 'package:bytebanktwo/screens/contacts_form.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
@@ -16,18 +18,21 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  if (kDebugMode) { // se estive desativa
-    await FirebaseCrashlytics.instance
-        .setCrashlyticsCollectionEnabled(false);
-  } else { // ativa
-    await FirebaseCrashlytics.instance
-        .setCrashlyticsCollectionEnabled(true);
-    FirebaseCrashlytics.instance.setUserIdentifier('usuario2');
+
+  if (kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+  } else {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    FirebaseCrashlytics.instance.setUserIdentifier('alura123');
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   }
 
-  runApp(ChangeNotifierProvider(
-      create: (context) => ContactListRecharge(), child: const MayApp()));
+  runZonedGuarded<Future<void>>(() async {
+    runApp(ChangeNotifierProvider(
+        create: (context) => ContactListRecharge(), child: const MayApp()));
+  }, FirebaseCrashlytics.instance.recordError);
+
+
 }
 
 class MayApp extends StatelessWidget {

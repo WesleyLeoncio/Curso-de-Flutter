@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bytebanktwo/components/mensage/failure_dialog.dart';
 import 'package:bytebanktwo/components/mensage/success_dialog.dart';
 import 'package:bytebanktwo/components/progress.dart';
 import 'package:bytebanktwo/components/transaction_auth_dialog.dart';
@@ -9,6 +8,7 @@ import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/model/transaction.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -84,7 +84,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     style: const TextStyle(fontSize: 24.0),
                     decoration: const InputDecoration(labelText: 'Value'),
                     keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                        const TextInputType.numberWithOptions(decimal: true),
                   ),
                 ),
                 Padding(
@@ -97,7 +97,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         final isValid = _formKey.currentState!.validate();
                         if (isValid) {
                           final double? value =
-                          double.tryParse(_valueController.text);
+                              double.tryParse(_valueController.text);
                           final transactionCreated = Transaction(
                               transactionId, value!, widget.contact);
                           showDialog(
@@ -135,7 +135,7 @@ class _TransactionFormState extends State<TransactionForm> {
       BuildContext context) async {
     try {
       final Transaction transaction =
-      await _webClient.save(transactionCreated, password);
+          await _webClient.save(transactionCreated, password);
       _showSuccessfulMessage(transaction, context);
       Navigator.pop(context);
     } on TimeoutException catch (e) {
@@ -178,10 +178,29 @@ class _TransactionFormState extends State<TransactionForm> {
 
   Future _showFailureMessage(BuildContext context,
       {String msg = 'Unkown error'}) async {
-    await showDialog(
+    final snackBar = SnackBar(
+      content: Text(msg),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar); // MSG 1
+
+    //showToast(msg, ToastGravity.BOTTOM); MSG 2
+
+    /*await showDialog(
         context: context,
         builder: (contextDialog) {
           return FailureDialog(msg);
-        });
+        });*/
+  }
+
+  void showToast(String msg, ToastGravity gravity) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: gravity,
+        timeInSecForIosWeb: 5,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }
