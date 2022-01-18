@@ -24,9 +24,16 @@ class FormularioTransferenciaState extends State<FormularioTransferencia> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Editor(_controllerNumeroConta, 'Numero Conta', '0000', null),
             Editor(
-                _controllerValorConta, 'Valor', '0.00', Icons.monetization_on),
+                controller: _controllerNumeroConta,
+                rotulo: 'Numero Conta',
+                dica: '0000',
+                icone: null),
+            Editor(
+                controller: _controllerValorConta,
+                rotulo: 'Valor',
+                dica: '0.00',
+                icone: Icons.monetization_on),
             ElevatedButton(
                 onPressed: () => _criarTransferencia(context),
                 child: const Text('Confirmar')),

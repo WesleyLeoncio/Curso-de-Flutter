@@ -17,9 +17,8 @@ class BytebankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            colorScheme: const ColorScheme.light()
-                .copyWith(primary: Colors.green[900])
-                .copyWith(secondary: Colors.green[900])),
+            colorScheme:
+                const ColorScheme.light().copyWith(primary: Colors.green[900])),
         home: const Dashboard());
   }
 }
