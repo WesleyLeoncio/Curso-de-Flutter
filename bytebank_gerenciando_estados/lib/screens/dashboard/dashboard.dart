@@ -1,8 +1,9 @@
-import 'package:bytebank_gerenciando_estados/models/saldo.dart';
 import 'package:bytebank_gerenciando_estados/screens/dashboard/saldo_card.dart';
 import 'package:bytebank_gerenciando_estados/screens/deposito/formulario_deposito.dart';
+import 'package:bytebank_gerenciando_estados/screens/transferencia/formulario_transferencia.dart';
+import 'package:bytebank_gerenciando_estados/screens/transferencia/lista_transferencia.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -19,12 +20,37 @@ class Dashboard extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: SaldoCard(),
             ),
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                    child: const Text('Receber depósito'),
+                    style: ElevatedButton.styleFrom(primary: Colors.green),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return FormularioDeposito();
+                      }));
+                    }),
+                ElevatedButton(
+                      child: const Text('Nova transferência'),
+                    style: ElevatedButton.styleFrom(primary: Colors.green),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return  FormularioTransferencia();
+                          }));
+                    })
+              ],
+            ),
             ElevatedButton(
-                child: const Text('Adicionar'),
+                child: const Text('Transfêrencias'),
+                style: ElevatedButton.styleFrom(primary: Colors.green),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FormularioDeposito();
-                  }));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                        return ListaTransferencia();
+                      }));
                 })
           ],
         ));

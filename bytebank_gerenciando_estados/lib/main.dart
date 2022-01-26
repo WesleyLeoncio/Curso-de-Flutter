@@ -1,11 +1,15 @@
 import 'package:bytebank_gerenciando_estados/models/saldo.dart';
+import 'package:bytebank_gerenciando_estados/models/transferencias.dart';
 import 'package:bytebank_gerenciando_estados/screens/dashboard/dashboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(ChangeNotifierProvider(
-      create: (context) => Saldo(0),
+void main() => runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context)=> Saldo(0)),
+        ChangeNotifierProvider(create: (context)=> Transferencias())
+      ],
       child: const BytebankApp(),
     ));
 
