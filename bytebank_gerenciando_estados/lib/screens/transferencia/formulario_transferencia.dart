@@ -5,6 +5,9 @@ import 'package:bytebank_gerenciando_estados/models/transferencias.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+const _titulo = 'Criando Transferência';
+const _botaoConfirmar = 'Confirmar';
+
 class FormularioTransferencia extends StatelessWidget {
   final TextEditingController _controllerNumeroConta = TextEditingController();
   final TextEditingController _controllerValorConta = TextEditingController();
@@ -15,7 +18,7 @@ class FormularioTransferencia extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Criando Transferência'),
+        title: const Text(_titulo),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -32,7 +35,7 @@ class FormularioTransferencia extends StatelessWidget {
                 icone: Icons.monetization_on),
             ElevatedButton(
                 onPressed: () => _criarTransferencia(context),
-                child: const Text('Confirmar')),
+                child: const Text(_botaoConfirmar)),
           ],
         ),
       ),

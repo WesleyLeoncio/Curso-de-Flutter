@@ -2,3 +2,6 @@
 https://github.com/alura-cursos/flutter-webapi
 // Api http parte 2
 https://github.com/alura-cursos/flutter-webapi-2/tree/aula-5
+
+// Gerenciamento de estado com provider
+https://github.com/alura-cursos/flutter-gerenciamento-de-estado/tree/aula-5

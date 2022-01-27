@@ -1,4 +1,3 @@
-import 'package:bytebank_gerenciando_estados/models/transferencia.dart';
 import 'package:bytebank_gerenciando_estados/models/transferencias.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
