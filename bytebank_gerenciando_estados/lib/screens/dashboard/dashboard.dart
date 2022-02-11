@@ -1,7 +1,6 @@
 import 'package:bytebank_gerenciando_estados/screens/dashboard/saldo_card.dart';
 import 'package:bytebank_gerenciando_estados/screens/deposito/formulario_deposito.dart';
 import 'package:bytebank_gerenciando_estados/screens/transferencia/formulario_transferencia.dart';
-import 'package:bytebank_gerenciando_estados/screens/transferencia/lista_transferencia.dart';
 import 'package:bytebank_gerenciando_estados/screens/transferencia/ultimas_transferencias.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +43,7 @@ class Dashboard extends StatelessWidget {
                     })
               ],
             ),
-            UltimasTransferencias()
+            const UltimasTransferencias()
           ],
         ));
   }

@@ -5,7 +5,6 @@ import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/routes/app_routes.dart';
 import 'package:bytebanktwo/screens/transaction_form.dart';
 import 'package:bytebanktwo/views/contact_list_recharge.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +70,6 @@ class _ContactsListState extends State<ContactsList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         //FirebaseCrashlytics.instance.crash();
           Navigator.of(context).pushNamed(
             AppRoutes.contactForm,
             arguments: Contact(0, '', 0),
