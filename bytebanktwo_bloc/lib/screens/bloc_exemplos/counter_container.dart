@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
 
+// EXEMPLO COM BLOC
 class CounterCubit extends Cubit<int> {
   CounterCubit() : super(0);
 
