@@ -1,7 +1,7 @@
 import 'package:bytebanktwo/routes/app_routes.dart';
-import 'package:bytebanktwo/screens/bloc_exemplos/counter_container.dart';
 import 'package:bytebanktwo/screens/contacts_form.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
+import 'package:bytebanktwo/screens/dashboard.dart';
 import 'package:bytebanktwo/screens/transactions_list.dart';
 import 'package:bytebanktwo/views/contact_list_recharge.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class MayApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: tema(),
-      home: const CounterContainer(),
+      home: const DashboardContainer(),
       routes: {
         AppRoutes.contactList: (context) => const ContactsList(),
         AppRoutes.contactForm: (context) => const ContactForm(),
@@ -33,7 +33,7 @@ class MayApp extends StatelessWidget {
 ThemeData tema() {
   return ThemeData(
     colorScheme: const ColorScheme.light()
-        .copyWith(primary: Colors.green)
+        .copyWith(primary: Colors.green[700])
         .copyWith(secondary: Colors.green[700]),
     fontFamily: 'Georgia',
     textTheme: const TextTheme(
