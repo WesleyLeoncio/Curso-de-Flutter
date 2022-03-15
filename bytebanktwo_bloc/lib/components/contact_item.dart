@@ -1,6 +1,7 @@
+import 'package:bytebanktwo/database/dao/contact_dao.dart';
 import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/routes/app_routes.dart';
-import 'package:bytebanktwo/views/contact_list_recharge.dart';
+import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -8,12 +9,11 @@ import 'package:provider/provider.dart';
 class ContactItem extends StatelessWidget {
   final Contact _contact;
   final Function onClick;
-
-  const ContactItem(this._contact, {Key? key,required this.onClick}) : super(key: key);
+  final ContactDao _dao = ContactDao();
+  ContactItem(this._contact, {Key? key,required this.onClick}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ContactListRecharge contactRecharge = context.watch<ContactListRecharge>();
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
@@ -35,11 +35,13 @@ class ContactItem extends StatelessWidget {
           caption: 'Editar',
           color: Colors.deepOrange[400],
           icon: Icons.edit, foregroundColor: Colors.white,
-          onTap: () {
-            Navigator.of(context).pushNamed(
+          onTap: () async{
+            await Navigator.of(context).pushNamed(
               AppRoutes.contactForm,
               arguments: _contact,
             );
+            update(context);
+            
           },
         ),
         IconSlideAction(
@@ -55,7 +57,8 @@ class ContactItem extends StatelessWidget {
                 actions: <Widget>[
                   ElevatedButton(
                     onPressed: () {
-                      contactRecharge.removeContact(_contact);
+                      _dao.delete(_contact.id);
+                      update(context);
                       Navigator.of(context).pop();
                     },
                     child: const Text("Sim"),
@@ -73,5 +76,8 @@ class ContactItem extends StatelessWidget {
         ),
       ],
     );
+  }
+  void update(BuildContext context) {
+    context.read<ContactsListCubit>().reload(_dao);
   }
 }

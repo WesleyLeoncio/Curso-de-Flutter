@@ -1,3 +1,5 @@
+import 'package:bytebanktwo/components/bloc_container.dart';
+import 'package:bytebanktwo/model/cubit/name_cubit.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:bytebanktwo/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +69,7 @@ class DashboardView extends StatelessWidget {
   }
 
   void _showContactsList(BuildContext blocContext) {
-    Navigator.of(blocContext).push(
-      MaterialPageRoute(
-        builder: (context) => const ContactsList(),
-      ),
-    );
+    push(blocContext, ContactsListContainer());
   }
 
   void _showChangeName(BuildContext blocContext) {

@@ -1,3 +1,4 @@
+import 'package:bytebanktwo/components/bloc_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
@@ -11,7 +12,7 @@ class CounterCubit extends Cubit<int> {
   void decrement() => emit(state - 1);
 }
 
-class CounterContainer extends StatelessWidget {
+class CounterContainer extends BlocContainer {
   const CounterContainer({Key? key}) : super(key: key);
 
   @override

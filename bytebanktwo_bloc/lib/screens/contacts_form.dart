@@ -1,5 +1,6 @@
+import 'package:bytebanktwo/database/dao/contact_dao.dart';
 import 'package:bytebanktwo/model/contact.dart';
-import 'package:bytebanktwo/views/contact_list_recharge.dart';
+import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +15,11 @@ class ContactForm extends StatefulWidget {
 
 class _ContactFormState extends State<ContactForm> {
   final _formKey = GlobalKey<FormState>();
-
+  final ContactDao _dao = ContactDao();
   @override
   Widget build(BuildContext context) {
     final contactArgs = ModalRoute.of(context)?.settings.arguments as Contact;
     final Contact contactNew = Contact(0, '', 0);
-    ContactListRecharge contactRecharge = context.watch<ContactListRecharge>();
     return Scaffold(
       appBar: AppBar(
         title: contactArgs.id == 0
@@ -93,7 +93,7 @@ class _ContactFormState extends State<ContactForm> {
                     width: double.maxFinite,
                     child: ElevatedButton(
                       onPressed: () =>
-                          _saveContact(contactRecharge, contactNew),
+                          _saveContact(_dao, contactNew),
                       child: const Text('Confirmar'),
                     ),
                   ),
@@ -106,11 +106,11 @@ class _ContactFormState extends State<ContactForm> {
     );
   }
 
-  void _saveContact(ContactListRecharge contactRecharge, Contact contactNew) {
+  void _saveContact(ContactDao dao, Contact contactNew) {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
-      contactRecharge.saveContact(contactNew);
+      dao.put(contactNew);
       Navigator.of(context).pop();
     }
   }

@@ -3,15 +3,13 @@ import 'package:bytebanktwo/screens/contacts_form.dart';
 import 'package:bytebanktwo/screens/contacts_list.dart';
 import 'package:bytebanktwo/screens/dashboard.dart';
 import 'package:bytebanktwo/screens/transactions_list.dart';
-import 'package:bytebanktwo/views/contact_list_recharge.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 void main() async{
-    runApp(ChangeNotifierProvider(
-        create: (context) => ContactListRecharge(), child: const MayApp()));
+   runApp(const MayApp());
 }
+
 
 class MayApp extends StatelessWidget {
   const MayApp({Key? key}) : super(key: key);
@@ -21,8 +19,8 @@ class MayApp extends StatelessWidget {
       theme: tema(),
       home: const DashboardContainer(),
       routes: {
-        AppRoutes.contactList: (context) => const ContactsList(),
-        AppRoutes.contactForm: (context) => const ContactForm(),
+        AppRoutes.contactListContainer: (context) => const ContactsListContainer(),
+        AppRoutes.contactForm: (context) =>  const ContactForm(),
         AppRoutes.transactionFeed: (context) => const TransactionsList(),
       },
     );
