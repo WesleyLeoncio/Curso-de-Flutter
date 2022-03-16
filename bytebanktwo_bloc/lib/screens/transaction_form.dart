@@ -1,31 +1,122 @@
 import 'dart:async';
-
-import 'package:bytebanktwo/components/mensage/success_dialog.dart';
+import 'package:bytebanktwo/components/bloc_container.dart';
+import 'package:bytebanktwo/components/mensage/error_view.dart';
 import 'package:bytebanktwo/components/progress.dart';
 import 'package:bytebanktwo/components/transaction_auth_dialog.dart';
 import 'package:bytebanktwo/http/webClients/transaction_webclient.dart';
 import 'package:bytebanktwo/model/contact.dart';
 import 'package:bytebanktwo/model/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
 
-class TransactionForm extends StatefulWidget {
-  final Contact contact;
-
-  const TransactionForm(this.contact, {Key? key}) : super(key: key);
-
-  @override
-  _TransactionFormState createState() => _TransactionFormState();
+@immutable
+abstract class TransactionFormState {
+  const TransactionFormState();
 }
 
-class _TransactionFormState extends State<TransactionForm> {
+@immutable
+class SendingState extends TransactionFormState {
+  const SendingState();
+}
+
+@immutable
+class ShowFormState extends TransactionFormState {
+  const ShowFormState();
+}
+
+@immutable
+class SentState extends TransactionFormState {
+  const SentState();
+}
+
+@immutable
+class FatalErrorFormState extends TransactionFormState {
+  final String _message;
+
+  const FatalErrorFormState(this._message);
+}
+
+class TransactionFormCubit extends Cubit<TransactionFormState> {
+  final TransactionWebClient _webClient = TransactionWebClient();
+
+  TransactionFormCubit() : super(const ShowFormState());
+
+  void _save(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    emit(const SendingState());
+    await _send(transactionCreated, password, context);
+  }
+
+  Future<void> _send(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    try {
+      await _webClient.save(transactionCreated, password);
+      emit(const SentState());
+    } on TimeoutException catch (e) {
+      emit(FatalErrorFormState(e.message.toString()));
+    } on HttpException catch (e) {
+      emit(FatalErrorFormState(e.message));
+    } on Exception catch (e) {
+      emit(FatalErrorFormState(e.toString()));
+    }
+  }
+}
+
+class TransactionFormContainer extends BlocContainer {
+  final Contact _contact;
+
+  const TransactionFormContainer(this._contact, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<TransactionFormCubit>(
+        create: (BuildContext context) {
+          return TransactionFormCubit();
+        },
+        child: BlocListener<TransactionFormCubit, TransactionFormState>(
+          listener: (context, state) {
+            if (state is SentState) {
+              Navigator.pop(context);
+            }
+          },
+          child: TransactionFormStaless(_contact),
+        ));
+  }
+}
+
+class TransactionFormStaless extends StatelessWidget {
+  final Contact _contact;
+
+  const TransactionFormStaless(this._contact, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TransactionFormCubit, TransactionFormState>(
+        builder: (context, state) {
+      if (state is ShowFormState) {
+        return _BasicForm(_contact);
+      }
+      if (state is SendingState || state is SentState) {
+        return const ProgressView();
+      }
+      if (state is FatalErrorFormState) {
+        return ErrorView(state._message);
+      }
+      // TODO tela de erro
+      return const ErrorView("Unknown error");
+    });
+  }
+}
+
+class _BasicForm extends StatelessWidget {
+  final Contact _contact;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _valueController = TextEditingController();
-  final TransactionWebClient _webClient = TransactionWebClient();
   final String transactionId = const Uuid().v4();
-  late bool _sending = false;
+
+  _BasicForm(this._contact);
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +141,8 @@ class _TransactionFormState extends State<TransactionForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Visibility(
-                    child: const Progress(
-                      titulo: 'Sending...',
-                    ),
-                    visible: _sending),
                 Text(
-                  widget.contact.name,
+                  _contact.name,
                   style: const TextStyle(
                     fontSize: 24.0,
                   ),
@@ -64,7 +150,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
-                    widget.contact.accountNumber.toString(),
+                    _contact.accountNumber.toString(),
                     style: const TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,
@@ -97,15 +183,17 @@ class _TransactionFormState extends State<TransactionForm> {
                         if (isValid) {
                           final double? value =
                               double.tryParse(_valueController.text);
-                          final transactionCreated = Transaction(
-                              transactionId, value!, widget.contact);
+                          final transactionCreated =
+                              Transaction(transactionId, value!, _contact);
                           showDialog(
                               context: context,
                               builder: (contextDialog) {
                                 return TransactionAuthDialog(
                                   onConfirm: (String password) {
-                                    _save(
-                                        transactionCreated, password, context);
+                                    BlocProvider.of<TransactionFormCubit>(
+                                            context)
+                                        ._save(transactionCreated, password,
+                                            context);
                                   },
                                 );
                               });
@@ -120,74 +208,5 @@ class _TransactionFormState extends State<TransactionForm> {
         ),
       ),
     );
-  }
-
-  void _save(Transaction transactionCreated, String password,
-      BuildContext context) async {
-    setState(() {
-      _sending = true;
-    });
-    await _send(transactionCreated, password, context);
-  }
-
-  Future<void> _send(Transaction transactionCreated, String password,
-      BuildContext context) async {
-    try {
-      final Transaction transaction =
-          await _webClient.save(transactionCreated, password);
-      _showSuccessfulMessage(transaction, context);
-      Navigator.pop(context);
-    } on TimeoutException catch (e) {
-      _showFailureMessage(context, msg: e.message.toString());
-    } on HttpException catch (e) {
-      _showFailureMessage(context, msg: e.message);
-    } on Exception catch (e) {
-      _showFailureMessage(context, msg: e.toString());
-    } finally {
-      setState(() {
-        _sending = false;
-      });
-    }
-  }
-
-  Future _showSuccessfulMessage(
-      Transaction transaction, BuildContext context) async {
-    // ignore: unnecessary_null_comparison
-    if (transaction != null) {
-      await showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return const SuccessDialog('successful transaction');
-          });
-      Navigator.pop(context);
-    }
-  }
-
-  Future _showFailureMessage(BuildContext context,
-      {String msg = 'Unkown error'}) async {
-    final snackBar = SnackBar(
-      content: Text(msg),
-      backgroundColor: Colors.red,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar); // MSG 1
-
-    //showToast(msg, ToastGravity.BOTTOM); MSG 2
-
-    /*await showDialog(
-        context: context,
-        builder: (contextDialog) {
-          return FailureDialog(msg);
-        });*/
-  }
-
-  void showToast(String msg, ToastGravity gravity) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: gravity,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
   }
 }

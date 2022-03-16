@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class SuccessDialog extends StatelessWidget {
   final String title;
-  final String message;
+  final String message = 'Transação efetuada com sucesso!';
   final IconData icon;
 
   const SuccessDialog(
-      this.message, {Key? key,
+       {Key? key,
         this.title = 'Success',
         this.icon = Icons.done,
       }) : super(key: key);
