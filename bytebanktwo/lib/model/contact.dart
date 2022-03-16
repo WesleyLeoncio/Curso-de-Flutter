@@ -18,3 +18,4 @@ class Contact {
     return 'Contact{name: $name, nConta: $accountNumber}';
   }
 }
+ 
