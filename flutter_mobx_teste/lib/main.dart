@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx_teste/screens/counter.dart';
+import 'package:flutter_mobx_teste/screens/name.dart';
 
 
 void main() {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const Counter(title: 'Contador com MobX')
+        home: const Name()
     );
   }
 }
