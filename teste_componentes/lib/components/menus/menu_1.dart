@@ -19,7 +19,7 @@ class _Menu1State extends State<Menu1> {
     return Scaffold(
         body: _pageOption[selectdedPage],
         bottomNavigationBar: ConvexAppBar(
-          style: TabStyle.reactCircle,
+          style: TabStyle.fixedCircle,
           backgroundColor: Colors.orange,
           gradient: const LinearGradient(
               begin: Alignment.topRight,
