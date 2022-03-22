@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx_teste/screens/form_teste.dart';
 import 'package:flutter_mobx_teste/screens/name.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const Name()
+        home: const FormTeste()
     );
   }
 }
