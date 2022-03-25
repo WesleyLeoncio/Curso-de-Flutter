@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx_teste/screens/form_teste.dart';
 import 'package:flutter_mobx_teste/stores/form_store/form_store.dart';
+import 'package:get_it/get_it.dart';
 
-import 'package:provider/provider.dart';
 
-void main() => runApp(MultiProvider(
-      providers: [
-        Provider<FormStore>(create: (context) => FormStore()),
-      ],
-      child: const MyApp(),
-    ));
+
+
+void main(){
+  GetIt getIt = GetIt.I;
+  getIt.registerSingleton<FormStore>(FormStore());
+
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

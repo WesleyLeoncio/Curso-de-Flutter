@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_mobx_teste/stores/form_store/form_store.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 
 class BodyWidgetForm extends StatelessWidget {
   const BodyWidgetForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final store= Provider.of<FormStore>(context);
+    final store = GetIt.I.get<FormStore>();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Observer(
