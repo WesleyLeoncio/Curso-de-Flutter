@@ -4,8 +4,6 @@ import 'package:flutter_mobx_teste/stores/form_store/form_store.dart';
 import 'package:get_it/get_it.dart';
 
 
-
-
 void main(){
   GetIt getIt = GetIt.I;
   getIt.registerSingleton<FormStore>(FormStore());

@@ -27,28 +27,32 @@ class TransactionPage extends StatelessWidget {
         ),
       ),
       body: Observer(builder: (BuildContext context) {
-        if (controller.listTransaction?.error != null) {
-          return const FailureDialog("Erro de Internet");
+        switch (controller.statePage) {
+          case StatusPage.loading:
+            return const Center(child: CircularProgressIndicator());
+          case StatusPage.loaded:
+            List<Transaction>? list = controller.listTransaction!.value;
+            return RefreshIndicator(
+              onRefresh: controller.fillTransaction,
+              child: ListView.builder(
+                itemCount: list!.length,
+                itemBuilder: (_, index) {
+                  var transaction = list[index];
+                  return TransactionItem(transaction);
+                },
+              ),
+            );
+          case StatusPage.erro:
+            return Center(
+                child:FailureDialog(controller.message),);
         }
-        if (controller.listTransaction?.value == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        List<Transaction>? list = controller.listTransaction?.value;
-
-        return ListView.builder(
-          itemCount: list!.length,
-          itemBuilder: (_, index) {
-            var transaction = list[index];
-            return TransactionItem(transaction);
-          },
-        );
       }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
         onPressed: () {
           Contact contact = Contact(1, 'WESLEY', 896);
-          Transaction transaction = Transaction('16 ', 427399, contact);
+          Transaction transaction = Transaction('19 ', 1699, contact);
           controller.inserir(transaction, '1000');
         },
       ),

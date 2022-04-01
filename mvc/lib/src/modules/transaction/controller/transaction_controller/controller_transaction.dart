@@ -6,6 +6,8 @@ import 'package:mvc/src/modules/transaction/repositories/http/webClients/transac
 
 part 'controller_transaction.g.dart';
 
+enum StatusPage { loading, loaded, erro }
+
 class ControllerTransaction = _ControllerTransaction
     with _$ControllerTransaction;
 
@@ -15,17 +17,34 @@ abstract class _ControllerTransaction with Store {
   @observable
   ObservableFuture<List<Transaction>>? listTransaction;
 
+  @observable
+  String message = '';
+
+  @computed
+  StatusPage get statePage {
+    if (listTransaction == null ||
+        listTransaction?.status == FutureStatus.rejected) {
+      message = listTransaction?.error.message;
+      return StatusPage.erro;
+    }
+    if (listTransaction?.status == FutureStatus.pending) {
+      return StatusPage.loading;
+    } else {
+      return StatusPage.loaded;
+    }
+  }
+
   _ControllerTransaction() {
     fillTransaction();
   }
 
   @action
-  fillTransaction() {
-    listTransaction = webClient.findAll().asObservable();
+  Future<void> fillTransaction() async {
+     listTransaction = webClient.findAll().asObservable();
   }
 
   Future<void> inserir(Transaction transaction, String password) async {
     await webClient.save(transaction, '1000');
-    fillTransaction();
+    await fillTransaction();
   }
 }
