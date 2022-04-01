@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:mvc/src/modules/others/model/status_page.dart';
 import 'package:mvc/src/modules/transaction/model/transaction.dart';
 import 'package:mvc/src/modules/transaction/repositories/http/webClients/transaction_webclient.dart';
 
 part 'controller_transaction.g.dart';
 
-enum StatusPage { loading, loaded, erro }
+
 
 class ControllerTransaction = _ControllerTransaction
     with _$ControllerTransaction;

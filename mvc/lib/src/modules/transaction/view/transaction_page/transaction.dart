@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mvc/src/modules/others/components/message/failure_dialog.dart';
+import 'package:mvc/src/modules/others/model/status_page.dart';
 import 'package:mvc/src/modules/transaction/controller/transaction_controller/controller_transaction.dart';
 import 'package:mvc/src/modules/transaction/model/contact.dart';
 import 'package:mvc/src/modules/transaction/model/transaction.dart';
+import 'package:mvc/src/modules/transaction/view/components/message/failure_dialog.dart';
 import 'package:mvc/src/modules/transaction/view/components/transaction_item.dart';
 
 class TransactionPage extends StatelessWidget {
