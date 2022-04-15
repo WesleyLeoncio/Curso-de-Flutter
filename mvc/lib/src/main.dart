@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'modules/transaction/controller/transaction_controller/controller_transaction.dart';
-import 'modules/transaction/view/transaction_page/transaction.dart';
+import 'modules/transaction/controller/transaction/controller_transaction.dart';
+import 'modules/transaction/view/pages/transaction.dart';
 
 
 

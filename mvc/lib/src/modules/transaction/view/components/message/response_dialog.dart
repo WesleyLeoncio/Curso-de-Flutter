@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mvc/src/modules/transaction/controller/transaction_controller/controller_transaction.dart';
+import 'package:mvc/src/modules/transaction/controller/transaction/controller_transaction.dart';
 
 class ResponseDialog extends StatelessWidget {
   final String title;
