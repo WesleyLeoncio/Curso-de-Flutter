@@ -13,7 +13,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  nuvigator: ^1.5.0
   cupertino_icons: ^1.0.2
   smooth_star_rating:
     git:
