@@ -8,7 +8,7 @@ class Pg2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("PG2"),
+        title: const Text("Pagina 2"),
       ),body: Center(child: Text(name)),
     );
   }
